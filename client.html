@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AJAX Example</title>
+</head>
+<body>
+	<style>
+
+	</style>
+	<h3>Add book to the database</h3>
+	<br>
+	<form id="fr">
+  		Title:<br>
+  	<input type="text" name="Title" id="title"><br>
+  		Author:<br>
+  	<input type="text" name="Author" id="auth"><br>
+  		Price:<br>
+  	<input type="text" name="Price" id="pr"><br>
+  		Genre:<br>
+  	<select id="genre">
+  		<option value="scienceFiction">Science Fiction</option>
+  		<option value="drama">Drama</option>
+  		<option value="actionAdventure">Action/Adventure</option>
+  		<option value="romance">Romance</option>
+  		<option value="mystery">Mystery</option>
+  		<option value="horror">Horror</option>
+	</select> 	
+	</form> 
+	<br>
+	 <button type="button" id="addBook">Add a book</button>
+	 <br>
+	 <br>
+	 <h3>Search for books</h3>
+	 <br>
+	 	Author:<br>
+	 <input type="text" name="auth" id="searchByTitle"><br>
+	 <br>
+	 <button type="button" id="searchBook">Search</button>
+	 <script>
+	 	function showAddition(){
+	 		var bookID =document.getElementById("title").value
+	 		var bookAuth =document.getElementById("auth").value
+	 		var bookPrice =document.getElementById("pr").value
+	 		var bookGenre =document.getElementById("genre").value
+
+	 		var newBook = {title: bookID, author:bookAuth, price: bookPrice, genre: bookGenre};
+
+	 		const xhr = new XMLHttpRequest();
+	 		xhr.open('POST', "http://localhost:8081/books/", true);
+	 		xhr.setRequestHeader("Content-type", "application/json");
+	 		xhr.send(JSON.stringify(newBook));
+	 		xhr.onreadystatechange = function(){
+	 			if(xhr.readyState == 4 && xhr.status == 200){
+	 				alert(xhr.responseText);
+	 				
+	 			}
+	 		}
+
+	 	}
+
+	 	function searchForBooks(){
+	 		var searching =document.getElementById("searchByTitle").value
+	 		const xhr = new XMLHttpRequest();
+	 		xhr.open('GET', "http://localhost:8081/books/" + searching, true);
+	 		xhr.send();
+	 		xhr.onreadystatechange = function(){
+	 			if(xhr.readyState == 4 && xhr.status == 200){
+	 				alert(xhr.responseText);
+	 			}
+	 		}
+	 	}
+	 	document.getElementById('addBook').addEventListener('click', showAddition);
+	 	document.getElementById('searchBook').addEventListener('click', searchForBooks)
+	 </script>
+
+</body>
+
+</html>
+
